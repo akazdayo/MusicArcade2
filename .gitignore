@@ -2,3 +2,7 @@ export/
 .vscode/
 *.dist/
 *.build/
+music.*
+sound.*
+bgm.*
+audio.*
