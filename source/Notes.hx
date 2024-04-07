@@ -2,6 +2,7 @@ package;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.util.FlxTimer;
 
 class Note
 {
@@ -19,7 +20,6 @@ class Note
 
 	public function create()
 	{
-		// TODO: レーンに座標を対応させる
 		var lanes = [
 			((FlxG.width / 2) + (0 * 150)) - 225,
 			((FlxG.width / 2) + (1 * 150)) - 225,
@@ -28,8 +28,6 @@ class Note
 
 		this.sprite = new FlxSprite(lanes[this.lane], 0);
 		this.sprite.loadGraphic("assets/images/normal.png");
-		// FlxG.state.add(this.sprite);
-		// add(note.sprite);
 	}
 
 	public function update():Bool
@@ -43,6 +41,38 @@ class Note
 		{
 			this.sprite.destroy();
 			return true;
+		}
+	}
+}
+
+class Charts
+{
+	public var chart:Array<Array<Int>>;
+
+	public function new()
+	{
+		this.chart = [[0, 0, 1], [0, 0, 1], [0, 0, 1], [0, 0, 1]];
+	}
+
+	public function dropNotes(notes:Array<Note>)
+	{
+		var delay:Float = 0;
+		for (x in this.chart)
+		{
+			new FlxTimer().start(0, Void ->
+			{
+				for (i in 0...3)
+				{
+					var j = x[i];
+					if (j == 1)
+					{
+						var _note = new Note(i, 1, 0);
+						_note.create();
+						notes.push(_note);
+					}
+				}
+			});
+			delay += 0.2;
 		}
 	}
 }

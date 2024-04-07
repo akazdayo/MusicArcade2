@@ -28,14 +28,6 @@ class JudgeLine
 		FlxG.state.add(new FlxSprite(FlxG.width / 3, 0).makeGraphic(8, FlxG.height, FlxColor.WHITE));
 		FlxG.state.add(new FlxSprite(FlxG.width / 1.5, 0).makeGraphic(8, FlxG.height, FlxColor.WHITE));
 
-		/*
-			スプライトの画像をロード
-			TODO : 画像をロードするときにエラーが出るので、一旦コメントアウト
-			judgeImage = new Array<FlxGraphic>();
-			judgeImage.push(FlxG.bitmap.add("assets/images/judge/off.png"));
-			judgeImage.push(FlxG.bitmap.add("assets/images/judge/on.png"));
-		 */
-
 		// スプライトを作成
 		judgeSprite = new Array<FlxSprite>();
 		for (i in 0...3)
@@ -54,19 +46,22 @@ class JudgeLine
 
 		for (note in laneNotes)
 		{
-			if ((judgeArea - 60) < note.sprite.y && (judgeArea - 30) > note.sprite.y) // Fast
+			// Slow
+			if ((judgeArea + 30) < note.sprite.y && (judgeArea + 50) > note.sprite.y)
 			{
 				note.sprite.destroy();
 				notes.remove(note);
 				return notes;
 			}
-			else if ((judgeArea - 30) < note.sprite.y && (judgeArea + 30) > note.sprite.y) // Perfect
+			// Perfect
+			else if ((judgeArea - 30) < note.sprite.y && (judgeArea + 30) > note.sprite.y)
 			{
 				note.sprite.destroy();
 				notes.remove(note);
 				return notes;
 			}
-			else if ((judgeArea + 30) < note.sprite.y && (judgeArea + 50) > note.sprite.y)
+			// Fast
+			else if ((judgeArea - 60) < note.sprite.y && (judgeArea - 30) > note.sprite.y)
 			{
 				note.sprite.destroy();
 				notes.remove(note);

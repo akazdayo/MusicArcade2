@@ -12,7 +12,7 @@ class Debug
 		var max:Int = 15;
 		var speed:Int = Math.floor(Math.random() * (max - min + 1)) + min;
 
-		#if html5
+		#if !html5
 		exitKey();
 		#end
 
