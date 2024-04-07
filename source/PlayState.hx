@@ -29,6 +29,7 @@ class PlayState extends FlxState
 	{
 		// KeyMapping
 		notes = Debug.keyMapping(notes);
+		notes = judgeLine.keyMapping(notes);
 
 		for (note in notes)
 		{
