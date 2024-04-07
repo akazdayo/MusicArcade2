@@ -44,35 +44,3 @@ class Note
 		}
 	}
 }
-
-class Charts
-{
-	public var chart:Array<Array<Int>>;
-
-	public function new()
-	{
-		this.chart = [[0, 0, 1], [0, 0, 1], [0, 0, 1], [0, 0, 1]];
-	}
-
-	public function dropNotes(notes:Array<Note>)
-	{
-		var delay:Float = 0;
-		for (x in this.chart)
-		{
-			new FlxTimer().start(0, Void ->
-			{
-				for (i in 0...3)
-				{
-					var j = x[i];
-					if (j == 1)
-					{
-						var _note = new Note(i, 1, 0);
-						_note.create();
-						notes.push(_note);
-					}
-				}
-			});
-			delay += 0.2;
-		}
-	}
-}

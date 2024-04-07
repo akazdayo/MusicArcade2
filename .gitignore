@@ -1,2 +1,4 @@
 export/
 .vscode/
+*.dist/
+*.build/
