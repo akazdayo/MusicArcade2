@@ -20,7 +20,13 @@ class Note
 	public function create()
 	{
 		// TODO: レーンに座標を対応させる
-		this.sprite = new FlxSprite(0, 0);
+		var lanes = [
+			((FlxG.width / 2) + (0 * 150)) - 225,
+			((FlxG.width / 2) + (1 * 150)) - 225,
+			((FlxG.width / 2) + (2 * 150)) - 225
+		];
+
+		this.sprite = new FlxSprite(lanes[this.lane], 0);
 		this.sprite.loadGraphic("assets/images/normal.png");
 		// FlxG.state.add(this.sprite);
 		// add(note.sprite);
@@ -28,7 +34,7 @@ class Note
 
 	public function update():Bool
 	{
-		if (FlxG.height >= sprite.y)
+		if ((FlxG.height + sprite.height) >= sprite.y)
 		{
 			this.sprite.y += this.speed;
 			return false;
@@ -36,7 +42,6 @@ class Note
 		else
 		{
 			this.sprite.destroy();
-			trace("destroyed");
 			return true;
 		}
 	}
