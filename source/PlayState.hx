@@ -2,6 +2,8 @@ package;
 
 import Judge.JudgeLine;
 import KeyMap.Debug;
+import LoadMusic.LoadMusic;
+import MusicState.MusicState;
 import Notes.Note;
 import flixel.FlxG;
 import flixel.FlxState;
@@ -28,10 +30,10 @@ class PlayState extends FlxState
 		judgeLine = new JudgeLine();
 
 		// 音声の取得
-		music = FlxG.sound.load(AssetPaths.music__ogg);
+		// music = FlxG.sound.load(AssetPaths.music__ogg);
 
 		// ゲーム開始
-		gameStart('https://raw.githubusercontent.com/akazdayo/MusicArcade2/develop/assets/data/charts/test.csv', dropNotes);
+		gameStart("https://gist.githubusercontent.com/akazdayo/7638d69da80bf552b5d6fb6f2b6a54aa/raw/5807348a855b97b53afd8812c26f728f94fe8df1/sample.json");
 	}
 
 	override public function update(elapsed:Float)
@@ -51,15 +53,18 @@ class PlayState extends FlxState
 		super.update(elapsed);
 	}
 
-	public function dropNotes(chart:Array<Array<Int>>)
+	public function dropNotes(chart:Array<Array<Int>>, url:String)
 	{
 		var delay:Float = 0;
-		music.play();
+		// music.play();
+		MusicState.load(url); // 曲を読み込む
+
+		// ノーツを生成
 		for (x in chart)
 		{
 			new FlxTimer().start(delay, Void ->
 			{
-				for (i in 0...3)
+				for (i in 0...3) // 一列送信
 				{
 					var j = x[i];
 					if (j == 1)
@@ -75,30 +80,35 @@ class PlayState extends FlxState
 		}
 	}
 
-	public function gameStart(url:String, callBack:Array<Array<Int>>->Void):Void
+	public function gameStart(url:String):Void
 	{
 		var chart = new Array<Array<Int>>();
 
-		var req = new haxe.Http(url);
-		req.onData = function(data)
+		var jsonReq = LoadMusic.loadJson(url);
+		jsonReq.onComplete(function(jsonData)
 		{
-			var rows = data.split('\n');
-			for (row in rows)
+			var req = new haxe.Http(jsonData.chart); // リクエストを作成
+			req.onData = function(data)
 			{
-				var _cols = new Array<Int>();
-				var cols = row.split(',');
-				for (col in cols)
+				// データを整える
+				var rows = data.split('\n');
+				for (row in rows)
 				{
-					_cols.push(Std.parseInt(col));
+					var _cols = new Array<Int>();
+					var cols = row.split(',');
+					for (col in cols)
+					{
+						_cols.push(Std.parseInt(col));
+					}
+					chart.push(_cols);
 				}
-				chart.push(_cols);
+				dropNotes(chart, jsonData.music); // データが取得できたらコールバックを呼び出す
 			}
-			callBack(chart); // データが取得できたらコールバックを呼び出す
-		}
-		req.onError = function(err)
-		{
-			throw err;
-		}
-		req.request(false);
+			req.onError = function(err)
+			{
+				throw err; // エラーを返す
+			}
+			req.request(false); // リクエストを送信
+		});
 	}
 }

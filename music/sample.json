@@ -1,0 +1,5 @@
+{
+    "name": "Sample Music",
+    "chart": "https://raw.githubusercontent.com/akazdayo/MusicArcade2/develop/assets/data/charts/test.csv",
+    "music": "https://bgmer.net/wp-content/uploads/2021/11/68_BPM71.mp3"
+}
