@@ -30,7 +30,7 @@ class PlayState extends FlxState
 		judgeLine = new JudgeLine();
 
 		// 音声の取得
-		// music = FlxG.sound.load(AssetPaths.music__ogg);
+		music = FlxG.sound.load(AssetPaths.music__ogg);
 
 		// ゲーム開始
 		gameStart("https://gist.githubusercontent.com/akazdayo/7638d69da80bf552b5d6fb6f2b6a54aa/raw/5807348a855b97b53afd8812c26f728f94fe8df1/sample.json");
@@ -57,7 +57,14 @@ class PlayState extends FlxState
 	{
 		var delay:Float = 0;
 		// music.play();
-		MusicState.load(url); // 曲を読み込む
+
+		#if html5
+		MusicState.loadWeb(url); // 曲を読み込む
+		#end
+		#if !html5
+		var musicState = new MusicState();
+		musicState.loadNeko(url); // 曲を読み込む
+		#end
 
 		// ノーツを生成
 		for (x in chart)
