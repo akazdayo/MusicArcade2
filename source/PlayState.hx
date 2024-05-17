@@ -33,7 +33,7 @@ class PlayState extends FlxState
 		music = FlxG.sound.load(AssetPaths.music__ogg);
 
 		// ゲーム開始
-		gameStart("https://gist.githubusercontent.com/akazdayo/7638d69da80bf552b5d6fb6f2b6a54aa/raw/5807348a855b97b53afd8812c26f728f94fe8df1/sample.json");
+		gameStart("http://127.0.0.1:8000/config/sample2.json");
 	}
 
 	override public function update(elapsed:Float)

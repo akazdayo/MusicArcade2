@@ -6,4 +6,7 @@ music.*
 sound.*
 bgm.*
 audio.*
+*.mp3
+*.wav
+*.ogg
 node_modules/

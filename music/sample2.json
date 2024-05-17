@@ -1,0 +1,5 @@
+{
+    "name": "Sample Music2",
+    "chart": "https://raw.githubusercontent.com/akazdayo/MusicArcade2/develop/assets/data/charts/test.csv",
+    "music": "http://127.0.0.1:8000/audio/303PM_230312.mp3"
+}
