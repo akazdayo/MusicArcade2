@@ -1,5 +1,7 @@
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
+from fastapi.middleware.cors import CORSMiddleware
+
 import os
 import csv
 
@@ -29,11 +31,20 @@ files = {
         ],
     },
 }
-print(files["config"]["files"])
-# dir_path = "./assets/"
-# files = [f for f in os.listdir(dir_path) if os.path.isfile(os.path.join(dir_path, f))]
-
 app = FastAPI()
+
+origins = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.get("/")

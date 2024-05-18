@@ -14,7 +14,6 @@ class PlayState extends FlxState
 {
 	var notes:Array<Note>;
 	var judgeLine:JudgeLine;
-	var music:FlxSound;
 
 	override public function create()
 	{
@@ -28,9 +27,6 @@ class PlayState extends FlxState
 
 		// 判定クラスの初期化
 		judgeLine = new JudgeLine();
-
-		// 音声の取得
-		music = FlxG.sound.load(AssetPaths.music__ogg);
 
 		// ゲーム開始
 		gameStart("http://127.0.0.1:8000/config/sample2.json");
@@ -56,15 +52,10 @@ class PlayState extends FlxState
 	public function dropNotes(chart:Array<Array<Int>>, url:String)
 	{
 		var delay:Float = 0;
-		// music.play();
-
-		#if html5
-		MusicState.loadWeb(url); // 曲を読み込む
-		#end
-		#if !html5
 		var musicState = new MusicState();
-		musicState.loadNeko(url); // 曲を読み込む
-		#end
+
+		musicState.load(url); // 曲を読み込む
+		musicState.play(); // 曲を再生
 
 		// ノーツを生成
 		for (x in chart)
