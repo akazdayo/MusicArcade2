@@ -1,8 +1,7 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 import os
-import csv
 
 files = {
     "chart": {
@@ -32,6 +31,7 @@ files = {
 }
 app = FastAPI()
 
+# Allow CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
@@ -41,29 +41,19 @@ app.add_middleware(
 )
 
 
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
-
-
 @app.get("/chart/{chart_id}")
-def read_chart(chart_id: str):
+def get_chart(chart_id: str):
     if chart_id not in files["chart"]["files"]:
-        return {"error": "chart not found"}
-
-    with open(
-        f"{files["chart"]["dir_path"]}/{chart_id}", encoding="utf-8", newline=""
-    ) as f:
-        reader = csv.reader(f)
-        content = [row for row in reader]
-        return {"chart": content}
+        raise HTTPException(status_code=404, detail="Item not found")
+    return FileResponse(
+        f'{files["chart"]["dir_path"]}/{chart_id}', media_type="text/csv"
+    )
 
 
 @app.get("/audio/{audio_id}")
 def get_audio(audio_id: str):
     if audio_id not in files["audio"]["files"]:
-        return {"error": "audio not found"}
-
+        raise HTTPException(status_code=404, detail="Item not found")
     return FileResponse(
         path=f"{files["audio"]["dir_path"]}/{audio_id}", media_type="audio/mpeg"
     )
@@ -72,8 +62,7 @@ def get_audio(audio_id: str):
 @app.get("/config/{config_id}")
 def get_config(config_id: str):
     if config_id not in files["config"]["files"]:
-        return {"error": "config not found"}
-
+        raise HTTPException(status_code=404, detail="Item not found")
     return FileResponse(
         path=f"{files["config"]["dir_path"]}/{config_id}", media_type="application/json"
     )
