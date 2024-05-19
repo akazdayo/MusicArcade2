@@ -2,12 +2,10 @@ package;
 
 import Judge.JudgeLine;
 import KeyMap.Debug;
-import LoadMusic.LoadMusic;
 import MusicState.MusicState;
 import Notes.Note;
 import flixel.FlxG;
 import flixel.FlxState;
-import flixel.sound.FlxSound;
 import flixel.util.FlxTimer;
 
 class PlayState extends FlxState
@@ -82,7 +80,8 @@ class PlayState extends FlxState
 	{
 		var chart = new Array<Array<Int>>();
 
-		var jsonReq = LoadMusic.loadJson(url);
+		// var jsonReq = LoadMusic.loadJson(url);
+		var jsonReq = MusicState.loadJson(url);
 		jsonReq.onComplete(function(jsonData)
 		{
 			var req = new haxe.Http(jsonData.chart); // リクエストを作成

@@ -73,10 +73,10 @@ class JudgeLine
 
 	public function keyMapping(notes:Array<Note>):Array<Note>
 	{
+		var key = ["A", "S", "D"];
 		for (i in 0...3)
 		{
-			var key = ["A", "S", "D"][i];
-			if (FlxG.keys.anyPressed([key]))
+			if (FlxG.keys.anyPressed([key[i]]))
 			{
 				if (!judgeSpriteImage[i])
 				{
@@ -84,7 +84,7 @@ class JudgeLine
 					judgeSpriteImage[i] = true;
 				}
 
-				if (FlxG.keys.anyJustPressed([key]))
+				if (FlxG.keys.anyJustPressed([key[i]]))
 				{
 					notes = judge(notes, i);
 				}
